@@ -1,7 +1,7 @@
 {
     "name": "grunt-img",
     "version": "0.1",
-    "description": "Grunt task to optimize png and jpg images with jpegtran & optipng",
+    "description": "Grunt task to optimize png and jpg images with optipng & jpegtran",
     "keywords": [
         "png",
         "jpg",

@@ -2,8 +2,17 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         img: {
-            src: ['tests/img/*.png'],
-            dest: 'tests/optimg'
+            filter: {
+                src: ['tests/img/*.png'],
+                dest: 'tests/optimg'
+            },
+            directory: {
+                src: 'tests/img',
+                dest: 'tests/optimg'
+            },
+            replace: {
+                src: ['tests/img/*.jpg']
+            }
         },
         lint: {
             grunt: ['grunt.js', 'tasks/*.js']

@@ -30,7 +30,20 @@ module.exports = function(grunt) {
   // rev task - reving is done in the `output/` directory
     grunt.registerMultiTask('img', 'Optimizes .png/.jpg images using optipng/jpegtran', function() {
         var cb = this.async(),
-            files = grunt.file.expandFiles(this.file.src);
+            source = this.file.src,
+            files = [],
+            pngConfig = grunt.config('optipng'),
+            jpgConfig = grunt.config('jpegtran');
+
+        if( grunt.utils.kindOf( source ) === 'string' && path.extname(source).length === 0 ) {
+            grunt.file.recurse(source,function(abspath){
+                if(abspath){
+                    files.push(abspath);
+                }
+            });
+        } else {
+            files = grunt.file.expandFiles(source);
+        }
 
         var pngfiles = files.filter(function(file) {
             return !!~png.indexOf(path.extname(file).toLowerCase());
@@ -40,48 +53,66 @@ module.exports = function(grunt) {
             return !!~jpegs.indexOf(path.extname(file).toLowerCase());
         });
 
-        var remains = 2;
-        grunt.helper('optipng', pngfiles, grunt.config('optipng'), function(err) {
+        if (this.file.dest && !/\/$/.test(this.file.dest) ) {
+            this.file.dest += '/';
+        }
+
+        grunt.helper('optipng', pngfiles, pngConfig, this.file.dest, function(err) {
             if(err) {
                 grunt.log.error(err);
                 return cb(false);
             }
 
-            grunt.helper('jpegtran', jpgfiles, grunt.config('jpegtran'), function(err) {
+
+            //REMOVE ME
+            cb();
+
+
+            /*grunt.helper('jpegtran', jpgfiles, jpgConfig, this.file.dest, function(err) {
                 if(err) {
                     grunt.log.error(err);
                     return cb(false);
                 }
                 cb();
-            });
+            });*/
         });
     });
 
-    grunt.registerHelper('optipng', function(files, opts, cb) {
+    grunt.registerHelper('optipng', function(files, opts, output, cb) {
         opts = opts || {};
         cb = cb || function() {};
 
         grunt.helper('which', 'optipng', function(err, cmdpath) {
             if(err) return grunt.helper('not installed', 'optipng', cb);
 
-            var args = opts.args ? opts.args : [];
-            args = args.concat(files);
+            var args = opts.args ? opts.args : [],
+                argsList, optipng;
 
             if(!files.length) return cb();
 
             grunt.log.writeln('Running optipng... ' + grunt.log.wordlist(files));
 
-            var optipng = grunt.utils.spawn({
-                cmd: cmdpath,
-                args: args
-            }, function() {});
+            for(var x = 0; x < files.length; x++) {
+                argsList = args.concat(files[x]);
 
-            optipng.stdout.pipe(process.stdout);
-            optipng.stderr.pipe(process.stderr);
-            optipng.on('exit', function(code) {
-                if(code) grunt.warn('optipng exited unexpectedly with exit code ' + code + '.', code);
-                cb();
-            });
+                if (output) {
+                    argsList.concat( ['-dir', output + path.basename( files[x] )] );
+                }
+
+                optipng = grunt.utils.spawn({
+                    cmd: cmdpath,
+                    args: argsList
+                }, function() {});
+
+                optipng.stdout.pipe(process.stdout);
+                optipng.stderr.pipe(process.stderr);
+                optipng.on('exit', function(code) {
+                    if(code) grunt.warn('optipng exited unexpectedly with exit code ' + code + '.', code);
+                    cb();
+                });
+            }
+
+
         });
     });
 
