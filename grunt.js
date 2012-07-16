@@ -1,9 +1,9 @@
 module.exports = function(grunt) {
 
-  // Project configuration.
     grunt.initConfig({
         img: {
-            src:
+            src: ['tests/img/*.png'],
+            dest: 'tests/optimg'
         },
         lint: {
             grunt: ['grunt.js', 'tasks/*.js']
@@ -32,5 +32,5 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', 'lint');
 
-    grunt.loadTasks('./support/');
+    grunt.loadTasks('tasks');
 };
