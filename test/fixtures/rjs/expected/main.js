@@ -1,1 +1,0 @@
-define("alpha",["require","exports","module"],function(a,b){b.name="alpha"}),define("sub/betaSub",{name:"betaSubName"}),define("beta",["./sub/betaSub"],function(a){return{name:"beta",subName:a.name}}),require(["alpha","beta"],function(a,b){}),define("main",function(){})

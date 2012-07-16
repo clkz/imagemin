@@ -1,1 +1,0 @@
-define(["./sub/betaSub"],function(a){return{name:"beta",subName:a.name}})
