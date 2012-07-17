@@ -146,15 +146,12 @@ module.exports = function(grunt) {
         }, callback);
     });
 
-    grunt.registerHelper('min_max_stat', function(tempFile, file) {
-        var min = grunt.file.read(tempFile).length,
-            max = grunt.file.read(file).length;
-
-        if (max > min) {
-            grunt.log.writeln(path.basename(file) + ' has been optimized \u001b[36m' + (max -min) + ' bytes\u001b[33m (' + Math.round(100 - ((min*100) / max)) + '%) \u001b[0m');
-        } else {
-            grunt.log.writeln('None bytes optimized');
-        }
+    // Output some size info about a file, from a stat object.
+    grunt.registerHelper('min_max_stat', function(min, max) {
+        min = typeof min === 'string' ? fs.statSync(min) : min;
+        max = typeof max === 'string' ? fs.statSync(max) : max;
+        grunt.log.writeln('Uncompressed size: ' + String(max.size).green + ' bytes.');
+        grunt.log.writeln('Compressed size: ' + String(min.size).green + ' bytes minified.');
     });
 
     grunt.registerHelper('not installed', function(cmd, cb) {
