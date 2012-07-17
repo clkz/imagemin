@@ -5,15 +5,19 @@ grunt-img
 
 ## Getting Started
 
-Be sure that you have [optipng][optipng] and [jpegtran][jpegtran](it's included with libjpeg) installed in your system. 
+Be sure that you have [optipng][optipng] and [jpegtran][jpegtran] installed in your system. 
 
 ### Mac users
 You can install with [homebrew][homebrew]
-`brew install optipng jpeg`
+```shell
+brew install optipng jpeg
+```
 
 ### Linux users
 Debian, Ubuntu and Mint
-`apt-get install optipng libjpeg libjpeg-progs`
+```shell
+apt-get install optipng libjpeg libjpeg-progs
+```
 Both libraries are easy to find for RPM distributions too.
 
 ### Windows users
@@ -72,7 +76,7 @@ grunt.initConfig({
 ```
 
 ## Using advanced options
-Both optipng as jpegtran has a lot of params to improve its otimization
+Both optipng and jpegtran has a lot of params to improve its otimization
 
 ```js
 grunt.config.init({
@@ -92,10 +96,6 @@ MIT License
 Credits
 ---------------
 * HTML5 Boilerplate [node-build-script][node-build-script]
-
-## Project information
-
-* Based on: http://github.com/h5bp/node-build-script
 
 [node-build-script]: http://github.com/h5bp/node-build-script
 [grunt]: https://github.com/cowboy/grunt
