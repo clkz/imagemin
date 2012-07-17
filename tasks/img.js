@@ -116,7 +116,7 @@ module.exports = function(grunt) {
                     try {
                         grunt.file.read(outputPath);
                     } catch(err) {
-                        grunt.file.write(outputPath);   
+                        grunt.file.write(outputPath);
                     }
                     grunt.log.writeln('Output file: ' + outputPath);
                 } else {
