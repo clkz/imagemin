@@ -77,7 +77,10 @@ module.exports = function(grunt) {
             var optipng = grunt.utils.spawn({
                 cmd: cmdpath,
                 args: args
-            }, function() {});
+            }, function(code) {
+                if(code) grunt.warn('optipng 0.7 or earlier is required, you could download and compile its source code on http://optipng.sourceforge.net/');
+                cb();
+            });
 
             optipng.stdout.pipe(process.stdout);
             optipng.stderr.pipe(process.stderr);

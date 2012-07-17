@@ -5,7 +5,7 @@ grunt-img
 
 ## Getting Started
 
-First, be sure that you have [optipng][optipng] and [jpegtran][jpegtran] installed in your system. 
+First, be sure that you have [optipng][optipng] 0.7(or earlier) and [jpegtran][jpegtran] installed in your system.
 
 ### for Mac users
 You can install with [homebrew][homebrew]
