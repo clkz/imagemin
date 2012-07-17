@@ -1,26 +1,26 @@
 grunt-img
 =============
 
-[Grunt][grunt] task to optimize PNG and JPG images with optipng & jpegtran.
+[Grunt][grunt] task to optimize PNG and JPG images with [optipng][optipng] & [jpegtran][jpegtran].
 
 ## Getting Started
 
-Be sure that you have [optipng][optipng] and [jpegtran][jpegtran] installed in your system. 
+First, be sure that you have [optipng][optipng] and [jpegtran][jpegtran] installed in your system. 
 
-### Mac users
+### for Mac users
 You can install with [homebrew][homebrew]
 ```shell
 brew install optipng jpeg
 ```
 
-### Linux users
+### for Linux users
 Debian, Ubuntu and Mint
 ```shell
 apt-get install optipng libjpeg libjpeg-progs
 ```
 Both libraries are easy to find for RPM distributions too.
 
-### Windows users
+### for Windows users
 Don't worry because both libraries are included.
 
 ### Setup task grunt-img with grunt.js
