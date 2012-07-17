@@ -24,7 +24,10 @@ Both libraries are easy to find for RPM distributions too.
 Don't worry because both libraries are included.
 
 ### Setup task grunt-img with grunt.js
-Install this task next to your project's [grunt.js gruntfile][getting_started] with: `npm install grunt-img`
+Install this task next to your project's [grunt.js gruntfile][getting_started] with:
+```shell
+npm install grunt-img
+```
 
 Then add the line bellow to your project's `grunt.js` gruntfile:
 
