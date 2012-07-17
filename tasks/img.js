@@ -31,6 +31,7 @@ module.exports = function(grunt) {
     grunt.registerMultiTask('img', 'Optimizes .png/.jpg images using optipng/jpegtran', function() {
         var cb = this.async(),
             source = this.file.src,
+            dest = this.file.dest,
             files = [],
             pngConfig = grunt.config('optipng'),
             jpgConfig = grunt.config('jpegtran');
@@ -53,28 +54,23 @@ module.exports = function(grunt) {
             return !!~jpegs.indexOf(path.extname(file).toLowerCase());
         });
 
-        if (this.file.dest && !/\/$/.test(this.file.dest) ) {
-            this.file.dest += '/';
+        if (dest && !/\/$/.test(dest) ) {
+            dest += '/';
         }
 
-        grunt.helper('optipng', pngfiles, pngConfig, this.file.dest, function(err) {
+        grunt.helper('optipng', pngfiles, pngConfig, dest, function(err) {
             if(err) {
                 grunt.log.error(err);
                 return cb(false);
             }
 
-
-            //REMOVE ME
-            cb();
-
-
-            /*grunt.helper('jpegtran', jpgfiles, jpgConfig, this.file.dest, function(err) {
+            grunt.helper('jpegtran', jpgfiles, jpgConfig, dest, function(err) {
                 if(err) {
                     grunt.log.error(err);
                     return cb(false);
                 }
                 cb();
-            });*/
+            });
         });
     });
 
@@ -85,67 +81,89 @@ module.exports = function(grunt) {
         grunt.helper('which', 'optipng', function(err, cmdpath) {
             if(err) return grunt.helper('not installed', 'optipng', cb);
 
-            var args = opts.args ? opts.args : [],
-                argsList, optipng;
+            var args = opts.args ? opts.args : [];
+                args = args.concat(files);
 
             if(!files.length) return cb();
 
             grunt.log.writeln('Running optipng... ' + grunt.log.wordlist(files));
 
-            for(var x = 0; x < files.length; x++) {
-                argsList = args.concat(files[x]);
-
-                if (output) {
-                    argsList.concat( ['-dir', output + path.basename( files[x] )] );
-                }
-
-                optipng = grunt.utils.spawn({
-                    cmd: cmdpath,
-                    args: argsList
-                }, function() {});
-
-                optipng.stdout.pipe(process.stdout);
-                optipng.stderr.pipe(process.stderr);
-                optipng.on('exit', function(code) {
-                    if(code) grunt.warn('optipng exited unexpectedly with exit code ' + code + '.', code);
-                    cb();
-                });
+            if (output && !args.join('').match('-dir') ) {
+                args.push('-dir', output, '-clobber');
             }
+
+            var optipng = grunt.utils.spawn({
+                cmd: cmdpath,
+                args: args
+            }, function() {});
+
+            optipng.stdout.pipe(process.stdout);
+            optipng.stderr.pipe(process.stderr);
+            optipng.on('exit', function(code) {
+                if(code) grunt.warn('optipng exited unexpectedly with exit code ' + code + '.', code);
+                cb();
+            });
 
 
         });
     });
 
-    grunt.registerHelper('jpegtran', function(files, opts, cb) {
+    grunt.registerHelper('jpegtran', function(files, opts, output, cb) {
         opts = opts || {};
         cb = cb || function() {};
-        opts.args = opts.args ? opts.args : ['-copy', 'none', '-optimize', '-outfile', 'jpgtmp.jpg'];
+        opts.args = opts.args ? opts.args : ['-copy', 'none', '-optimize','-outfile','jpgtmp.jpg'];
 
         grunt.helper('which', 'jpegtran', function(err, cmdpath) {
-          if(err) return grunt.helper('not installed', 'jpegtran', cb);
-          (function run(file) {
-            if(!file) return cb();
-            grunt.log.subhead('** Processing: ' + file);
-            var jpegtran = grunt.utils.spawn({
-              cmd: cmdpath,
-              args: opts.args.concat(file)
-            }, function() {});
+            if(err) return grunt.helper('not installed', 'jpegtran', cb);
+            (function run(file) {
+                if(!file) return cb();
 
-            jpegtran.stdout.pipe(process.stdout);
-            jpegtran.stderr.pipe(process.stderr);
+                grunt.log.subhead('** Processing: ' + file);
 
-            jpegtran.on('exit', function(code) {
-              if(code) return grunt.warn('jpgtran exited unexpectedly with exit code ' + code + '.', code);
-              // output some size info about the file
-              grunt.helper('min_max_stat', 'jpgtmp.jpg', file);
-              // copy the temporary optimized jpg to original file
-              fs.createReadStream('jpgtmp.jpg')
-                .pipe(fs.createWriteStream(file)).on('close', function() {
-                  run(files.shift());
+                var jpegtran = grunt.utils.spawn({
+                  cmd: cmdpath,
+                  args: opts.args.concat(file)
+                }, function() {});
+
+                var outputPath;
+                if (output) {
+                    outputPath = output + path.basename(file);
+                    try {
+                        grunt.file.read(outputPath);
+                    } catch(err) {
+                        grunt.file.write(outputPath);   
+                    }
+                    grunt.log.writeln('Output file: ' + outputPath);
+                } else {
+                    outputPath = file;
+                }
+
+                jpegtran.stdout.pipe(process.stdout);
+                jpegtran.stderr.pipe(process.stderr);
+
+                jpegtran.on('exit', function(code) {
+                  if(code) return grunt.warn('jpgtran exited unexpectedly with exit code ' + code + '.', code);
+                  // output some size info about the file
+                  grunt.helper('min_max_stat', 'jpgtmp.jpg', file);
+                  // copy the temporary optimized jpg to original file
+                  fs.createReadStream('jpgtmp.jpg')
+                    .pipe(fs.createWriteStream(outputPath)).on('close', function() {
+                      run(files.shift());
+                    });
                 });
-            });
-          }(files.shift()));
+            }(files.shift()));
         });
+    });
+
+    grunt.registerHelper('min_max_stat', function(tempFile, file) {
+        var min = grunt.file.read(tempFile).length,
+            max = grunt.file.read(file).length;
+
+        if (max > min) {
+            grunt.log.writeln(path.basename(file) + ' has been optimized \u001b[36m' + (max -min) + ' bytes\u001b[33m (' + Math.round(100 - ((min*100) / max)) + '%) \u001b[0m');
+        } else {
+            grunt.log.writeln('None bytes optimized');
+        }
     });
 
     grunt.registerHelper('not installed', function(cmd, cb) {

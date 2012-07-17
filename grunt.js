@@ -6,12 +6,13 @@ module.exports = function(grunt) {
                 src: ['tests/img/*.png'],
                 dest: 'tests/optimg'
             },
-            directory: {
+            dir: {
                 src: 'tests/img',
                 dest: 'tests/optimg'
             },
-            replace: {
-                src: ['tests/img/*.jpg']
+            jpg: {
+                src: ['tests/img/*.jpg'],
+                dest: 'tests/optimg'
             }
         },
         lint: {
@@ -39,7 +40,7 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('default', 'lint');
+    grunt.registerTask('default', 'lint img');
 
     grunt.loadTasks('tasks');
 };
