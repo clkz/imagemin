@@ -3,23 +3,6 @@ var fs = require('fs'),
     path = require('path'),
     which = require('which');
 
-//
-// This task takes care of img optimizations by running a set of `.png`
-// or `.jpg` files through optipng and jpegtran.
-//
-//      grunt img:<type>
-//
-// Gruntfile config:
-//
-//      ...
-//      img: {
-//        src: ['img/**/*'],
-//        options: {
-//          ...
-//        }
-//      }
-//
-
 var win32 = process.platform === 'win32';
 
 module.exports = function(grunt) {
@@ -27,7 +10,6 @@ module.exports = function(grunt) {
     var png = ['.png', '.bmp', '.gif', '.pnm', '.tiff'],
         jpegs = ['.jpg', 'jpeg'];
 
-  // rev task - reving is done in the `output/` directory
     grunt.registerMultiTask('img', 'Optimizes .png/.jpg images using optipng/jpegtran', function() {
         var cb = this.async(),
             source = this.file.src,
@@ -36,7 +18,7 @@ module.exports = function(grunt) {
             pngConfig = grunt.config('optipng'),
             jpgConfig = grunt.config('jpegtran');
 
-        if( grunt.utils.kindOf( source ) === 'string' && path.extname(source).length === 0 ) {
+        if( grunt.utils.kindOf( source ) === 'string' && path.extname( source ).length === 0 ) {
             grunt.file.recurse(source,function(abspath){
                 if(abspath){
                     files.push(abspath);
