@@ -21,7 +21,7 @@ apt-get install optipng libjpeg libjpeg-progs
 Both libraries are easy to find for RPM distributions too.
 
 ### Windows users
-Don't worry, because both libraries are included.
+Don't worry because both libraries are included.
 
 ### Setup task grunt-img with grunt.js
 Install this task next to your project's [grunt.js gruntfile][getting_started] with: `npm install grunt-img`
