@@ -19,11 +19,13 @@ module.exports = function(grunt) {
             jpgConfig = grunt.config('jpegtran');
 
         if( grunt.utils.kindOf( source ) === 'string' && path.extname( source ).length === 0 ) {
+            var filesList = [];
             grunt.file.recurse(source,function(abspath){
                 if(abspath){
-                    files.push(abspath);
+                    filesList.push(abspath);
                 }
             });
+            files = filesList;
         } else {
             files = grunt.file.expandFiles(source);
         }
@@ -41,16 +43,10 @@ module.exports = function(grunt) {
         }
 
         grunt.helper('optipng', pngfiles, pngConfig, dest, function(err) {
-            if(err) {
-                grunt.log.error(err);
-                return cb(false);
-            }
+            if(err) grunt.log.error(err);
 
             grunt.helper('jpegtran', jpgfiles, jpgConfig, dest, function(err) {
-                if(err) {
-                    grunt.log.error(err);
-                    return cb(false);
-                }
+                if(err) grunt.log.error(err);
                 cb();
             });
         });
@@ -77,18 +73,11 @@ module.exports = function(grunt) {
             var optipng = grunt.utils.spawn({
                 cmd: cmdpath,
                 args: args
-            }, function(code) {
-                if(code) grunt.warn('optipng 0.7 or earlier is required, you could download and compile its source code on http://optipng.sourceforge.net/');
-                cb();
-            });
+            }, function() {});
 
             optipng.stdout.pipe(process.stdout);
             optipng.stderr.pipe(process.stderr);
-            optipng.on('exit', function(code) {
-                if(code) grunt.warn('optipng exited unexpectedly with exit code ' + code + '.', code);
-                cb();
-            });
-
+            optipng.on('exit', cb);
 
         });
     });
