@@ -19,8 +19,6 @@ module.exports = function(grunt) {
             jpgConfig = grunt.config('jpegtran'),
             recursive =  grunt.config('recursive') || true;
 
-        console.log(this.data);
-
         if( grunt.utils.kindOf( source ) === 'string' && path.extname( source ).length === 0 && recursive ) {
             var filesList = [];
             grunt.file.recurse(source,function(abspath){
