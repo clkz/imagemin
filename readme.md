@@ -34,6 +34,7 @@ Then add the line bellow to your project's `grunt.js` gruntfile:
 ```javascript
 grunt.loadNpmTasks('grunt-img');
 ```
+Questions? Take a look at [this stream](http://shelr.tv/records/5007063396608020cc000117)
 
 ## How to config
 Grunt provide a simple way to config its tasks, grunt-img follow the same principle:
@@ -74,18 +75,6 @@ grunt.initConfig({
         task6: {
             src: ['public/img/*.png']
         }
-    }
-});
-```
-
-## Using advanced options
-Both optipng and jpegtran has a lot of params to improve its otimization
-
-```js
-grunt.config.init({
-    img: {
-        optipng: ['-log','ufc.log'],
-        jpegtran: ['-arithmetic']
     }
 });
 ```

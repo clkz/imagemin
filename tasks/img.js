@@ -16,9 +16,12 @@ module.exports = function(grunt) {
             dest = this.file.dest,
             files = [],
             pngConfig = grunt.config('optipng'),
-            jpgConfig = grunt.config('jpegtran');
+            jpgConfig = grunt.config('jpegtran'),
+            recursive =  grunt.config('recursive') || true;
 
-        if( grunt.utils.kindOf( source ) === 'string' && path.extname( source ).length === 0 ) {
+        console.log(this.data);
+
+        if( grunt.utils.kindOf( source ) === 'string' && path.extname( source ).length === 0 && recursive ) {
             var filesList = [];
             grunt.file.recurse(source,function(abspath){
                 if(abspath){
@@ -66,7 +69,7 @@ module.exports = function(grunt) {
 
             grunt.log.writeln('Running optipng... ' + grunt.log.wordlist(files));
 
-            if (output && !args.join('').match('-dir') ) {
+            if ( output ) {
                 args.push('-dir', output, '-clobber');
             }
 
