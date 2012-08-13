@@ -49,9 +49,9 @@ grunt.initConfig({
             dest: 'public/img'
         },
 
-        // filter extension with output path
+        // recursive extension filter with output path
         task2: {
-            src: ['public/src/*.png'],
+            src: ['public/src/**/*.png'],
             dest: 'public/img'
         },
 
