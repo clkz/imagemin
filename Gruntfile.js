@@ -8,7 +8,7 @@ module.exports = function(grunt) {
             }
         },
         lint: {
-            grunt: ['grunt.js', 'tasks/*.js']
+            grunt: ['Gruntfile.js', 'tasks/*.js']
         },
         watch: {
             files: '<config:lint.grunt>',

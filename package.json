@@ -1,6 +1,6 @@
 {
     "name": "grunt-img",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "Grunt task to optimize png and jpg images with optipng & jpegtran",
     "keywords": [
         "png",
@@ -24,7 +24,7 @@
         "url": "git://github.com/heldr/grunt-img.git"
     },
     "dependencies": {
-        "grunt": "~0.3.11",
+        "grunt": "~0.4.0",
         "which": "~1.0.5"
     },
     "engines": {
