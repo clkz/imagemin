@@ -1,4 +1,3 @@
-
 var fs = require('fs'),
     path = require('path'),
     which = require('which');
@@ -6,6 +5,7 @@ var fs = require('fs'),
 var win32 = process.platform === 'win32';
 
 module.exports = function(grunt) {
+    "use strict";
 
     var png = ['.png', '.bmp', '.gif', '.pnm', '.tiff'],
         jpegs = ['.jpg', 'jpeg'],
@@ -14,6 +14,17 @@ module.exports = function(grunt) {
         clear_temp_file,
         min_max_stat,
         not_installed;
+
+    // **which** helper, wrapper to isaacs/which package plus some fallback logic
+    // specifically for the win32 binaries in vendor/ (optipng.exe, jpegtran.exe)
+    var which_bin = function(cmd, cb) {
+        if(!win32 || !/optipng|jpegtran/.test(cmd)) return which(cmd, cb);
+
+        var cmdpath = cmd === 'optipng' ? '../vendor/optipng-0.7.1-win32/optipng.exe' :
+          '../vendor/jpegtran-8d/jpegtran.exe';
+
+        cb(null, path.join(__dirname, cmdpath));
+    };
 
     grunt.registerMultiTask('img', 'Optimizes .png/.jpg images using optipng/jpegtran', function() {
         var cb = this.async(),
@@ -165,14 +176,4 @@ module.exports = function(grunt) {
         if(cb) cb();
     };
 
-    // **which** helper, wrapper to isaacs/which package plus some fallback logic
-    // specifically for the win32 binaries in vendor/ (optipng.exe, jpegtran.exe)
-    which_bin = function(cmd, cb) {
-        if(!win32 || !/optipng|jpegtran/.test(cmd)) return which(cmd, cb);
-
-        var cmdpath = cmd === 'optipng' ? '../vendor/optipng-0.7.1-win32/optipng.exe' :
-          '../vendor/jpegtran-8d/jpegtran.exe';
-
-        cb(null, path.join(__dirname, cmdpath));
-    };
 };

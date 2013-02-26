@@ -1,5 +1,5 @@
 module.exports = function(grunt) {
-
+    "use strict";
     grunt.initConfig({
         img: {
             dir: {
@@ -7,14 +7,12 @@ module.exports = function(grunt) {
                 dest: 'tests/optimg'
             }
         },
-        lint: {
-            grunt: ['Gruntfile.js', 'tasks/*.js']
-        },
         watch: {
             files: '<config:lint.grunt>',
             tasks: 'lint:grunt'
         },
         jshint: {
+            files: ['Gruntfile.js', 'tasks/*.js'],
             options: {
                 es5: true,
                 node: true,
@@ -32,7 +30,8 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('default', 'lint img');
-
+    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadTasks('tasks');
+
+    grunt.registerTask('default', ['jshint','img']);
 };

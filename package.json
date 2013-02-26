@@ -1,36 +1,37 @@
 {
-    "name": "grunt-img",
-    "version": "0.1.5",
-    "description": "Grunt task to optimize png and jpg images with optipng & jpegtran",
-    "keywords": [
-        "png",
-        "jpg",
-        "image optimizer",
-        "compress image",
-        "image",
-        "web performance"
-    ],
-    "homepage": "https://github.com/heldr/grunt-img",
-    "bugs": "https://github.com/heldr/grunt-img/issues",
-    "author": {
-        "name": "Helder Santana",
-        "email": "heldr@me.com",
-        "url": "http://heldr.com"
-    },
-    "main": "grunt.js",
-    "bin": "bin/grunt-img",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/heldr/grunt-img.git"
-    },
-    "dependencies": {
-        "grunt": "~0.4.0",
-        "which": "~1.0.5"
-    },
-    "engines": {
-        "node": ">=0.6.0"
-    },
-    "licenses": {
-        "type": "MIT"
-    }
+  "name": "grunt-img",
+  "version": "0.1.5",
+  "description": "Grunt task to optimize png and jpg images with optipng & jpegtran",
+  "keywords": [
+    "png",
+    "jpg",
+    "image optimizer",
+    "compress image",
+    "image",
+    "web performance"
+  ],
+  "homepage": "https://github.com/heldr/grunt-img",
+  "bugs": "https://github.com/heldr/grunt-img/issues",
+  "author": {
+    "name": "Helder Santana",
+    "email": "heldr@me.com",
+    "url": "http://heldr.com"
+  },
+  "main": "grunt.js",
+  "bin": "bin/grunt-img",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/heldr/grunt-img.git"
+  },
+  "dependencies": {
+    "grunt": "~0.4.0",
+    "which": "~1.0.5",
+    "grunt-contrib-jshint": "~0.1.1"
+  },
+  "engines": {
+    "node": ">=0.6.0"
+  },
+  "licenses": {
+    "type": "MIT"
+  }
 }
