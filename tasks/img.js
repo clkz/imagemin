@@ -20,8 +20,14 @@ module.exports = function(grunt) {
     var which_bin = function(cmd, cb) {
         if(!win32 || !/optipng|jpegtran/.test(cmd)) return which(cmd, cb);
 
+        var jpegtran = '../vendor/jpegtran-turbo/win32/jpegtran.exe';
+
+        if (process.arch === 'x64') {
+            jpegtran = '../vendor/jpegtran-turbo/win64/jpegtran.exe';
+        }
+
         var cmdpath = cmd === 'optipng' ? '../vendor/optipng-0.7.4-win32/optipng.exe' :
-          '../vendor/jpegtran-9/jpegtran.exe';
+          jpegtran;
 
         cb(null, path.join(__dirname, cmdpath));
     };
