@@ -20,8 +20,8 @@ module.exports = function(grunt) {
     var which_bin = function(cmd, cb) {
         if(!win32 || !/optipng|jpegtran/.test(cmd)) return which(cmd, cb);
 
-        var cmdpath = cmd === 'optipng' ? '../vendor/optipng-0.7.1-win32/optipng.exe' :
-          '../vendor/jpegtran-8d/jpegtran.exe';
+        var cmdpath = cmd === 'optipng' ? '../vendor/optipng-0.7.4-win32/optipng.exe' :
+          '../vendor/jpegtran-9/jpegtran.exe';
 
         cb(null, path.join(__dirname, cmdpath));
     };
@@ -67,7 +67,7 @@ module.exports = function(grunt) {
                 if(err) grunt.log.error(err);
                 cb();
             });
-        });      
+        });
     });
 
     optipng = function(files, opts, output, cb) {
