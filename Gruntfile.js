@@ -27,10 +27,20 @@ module.exports = function(grunt) {
                 boss: true,
                 eqnull: true
             }
+        },
+        // create version tag and push it
+        release: {
+          options: {
+            npm: false,
+            tagName: 'v<%= version %>',
+            commitMessage: 'bump version <%= version %>',
+            tagMessage: 'create tag v<%= version %>'
+          }
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-release');
     grunt.loadTasks('tasks');
 
     grunt.registerTask('default', ['jshint','img']);
