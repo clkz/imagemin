@@ -1,7 +1,7 @@
 grunt-img
 =============
 
-[Grunt][grunt] task to optimize PNG and JPG images with [optipng][optipng] & [jpegtran][jpegtran].
+[Grunt][grunt] task to optimize PNG and JPG images with [optipng][optipng] & [jpegtran][jpegtran] ([jpegtran-turbo][jpegtran-turbo] on win32).
 
 ## Getting Started
 
@@ -93,5 +93,6 @@ Credits
 [grunt]: https://github.com/cowboy/grunt
 [getting_started]: https://github.com/cowboy/grunt/blob/master/docs/getting_started.md
 [jpegtran]: http://jpegclub.org/jpegtran/
+[jpegtran-turbo]: http://libjpeg-turbo.virtualgl.org/
 [optipng]: http://optipng.sourceforge.net/
 [homebrew]: http://mxcl.github.com/homebrew/
