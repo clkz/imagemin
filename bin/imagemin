@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+
+var fs = require('fs');
+var path = require('path');
+var imagemin = require('../index.js');
+var optimist = require('optimist')
+    .alias({
+        'o': 'output'
+    });
+var opts = optimist.argv;
+
+var files = opts._;
+
+imagemin(files, opts.o);

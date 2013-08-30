@@ -1,41 +1,42 @@
 {
-  "name": "grunt-img",
-  "version": "0.1.7",
-  "description": "Grunt task to optimize png and jpg images with optipng & jpegtran",
-  "keywords": [
-    "png",
-    "jpg",
-    "image optimizer",
-    "compress image",
-    "image",
-    "web performance"
-  ],
-  "homepage": "https://github.com/heldr/grunt-img",
-  "bugs": "https://github.com/heldr/grunt-img/issues",
-  "author": {
-    "name": "Helder Santana",
-    "email": "heldr@me.com",
-    "url": "http://heldr.com"
-  },
-  "main": "grunt.js",
-  "bin": "bin/grunt-img",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/heldr/grunt-img.git"
-  },
-  "dependencies": {
-    "grunt": "~0.4.0",
-    "which": "~1.0.5",
-    "grunt-contrib-jshint": "~0.1.1"
-  },
-  "engines": {
-    "node": ">=0.6.0"
-  },
-  "licenses": {
-    "type": "MIT"
-  },
-  "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-release": "~0.3.5"
-  }
+    "name": "imagemin",
+    "version": "0.1.0",
+    "description": "A tool to optimize png and jpg images with optipng & jpegtran",
+    "keywords": [
+        "png",
+        "jpg",
+        "image optimizer",
+        "compress image",
+        "image",
+        "web performance"
+    ],
+    "homepage": "https://github.com/ksky521/imagemin",
+    "bugs": {
+        "url": "https://github.com/ksky521/imagemin/issues"
+    },
+    "author": {
+        "name": "Theowang",
+        "email": "ksky521@gmail.com",
+        "url": "http://js.in"
+    },
+    "main": "index.js",
+    "bin": {
+        "imagemin": "bin/imagemin"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/ksky521/imagemin.git"
+    },
+    "dependencies": {
+        "colors": "~0.6.2",
+        "which": "~1.0.5",
+        "optimist": "~0.6.0"
+    },
+    "engines": {
+        "node": ">=0.6.0"
+    },
+    "licenses": {
+        "type": "MIT"
+    }
+
 }

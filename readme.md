@@ -1,7 +1,7 @@
-grunt-img
+imagemin
 =============
 
-[Grunt][grunt] task to optimize PNG and JPG images with [optipng][optipng] & [jpegtran][jpegtran] ([jpegtran-turbo][jpegtran-turbo] on win32).
+A tool which fork from [grunt-img][grunt-img] to optimize PNG and JPG images with [optipng][optipng] & [jpegtran][jpegtran] ([jpegtran-turbo][jpegtran-turbo] on win32).
 
 ## Getting Started
 
@@ -23,75 +23,35 @@ Both libraries are easy to find for RPM distributions too.
 ### for Windows users
 Don't worry because both libraries are included.
 
-### Setup task grunt-img with grunt.js
-Install this task next to your project's [grunt.js gruntfile][getting_started] with:
+### Install
 ```shell
-npm install grunt-img
+npm install imagemin
 ```
 
-Then add the line bellow to your project's `grunt.js` gruntfile:
+## How to use
 
-```javascript
-grunt.loadNpmTasks('grunt-img');
+```shell
+imagemin file_path
+imagemin file_path -o new_file_path
 ```
-Questions? Take a look at [this stream](http://shelr.tv/records/5007063396608020cc000117)
-
-## How to config
-Grunt provide a simple way to config its tasks, grunt-img follow the same principle:
 
 ```js
-grunt.initConfig({
-    img: {
-
-        // using only dirs with output path
-        task1: {
-            src: 'public/src',
-            dest: 'public/img'
-        },
-
-        // recursive extension filter with output path
-        task2: {
-            src: ['public/src/**/*.png'],
-            dest: 'public/img'
-        },
-
-        // file by file with output path
-        task3: {
-            src: ['public/src/logo.png','public/src/social.jpg'],
-            dest: 'public/img'
-        },
-
-        // single path to optimize and replace all images
-        task4: {
-            src: 'public/img'
-        },
-
-        // file by file to optimize and replace
-        task5: {
-            src: ['public/img/concert.jpg, public/img/halestorm.png']
-        },
-
-        // filter extension to optimize and replace
-        task6: {
-            src: ['public/img/*.png']
-        }
-    }
-});
+var imagemin = require('imagemin');
+imagemin(file_path, dest, callback);
 ```
-
 
 ## License
 
 MIT License
-(c) [Helder Santana](http://heldr.com)
+(c) [Helder Santana](http://heldr.com) [@三水清](http://weibo.com/sanshuiqing)
 
 Credits
 ---------------
-* HTML5 Boilerplate [node-build-script][node-build-script]
+* Grunt-image [Helder Santana](http://heldr.com)
+* HTML5 Boilerplate [node-build-script](http://github.com/h5bp/node-build-script)
 
 [node-build-script]: http://github.com/h5bp/node-build-script
-[grunt]: https://github.com/cowboy/grunt
-[getting_started]: https://github.com/cowboy/grunt/blob/master/docs/getting_started.md
+[grunt-img]: https://github.com/heldr/grunt-img
 [jpegtran]: http://jpegclub.org/jpegtran/
 [jpegtran-turbo]: http://libjpeg-turbo.virtualgl.org/
 [optipng]: http://optipng.sourceforge.net/
