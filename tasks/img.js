@@ -11,7 +11,6 @@ module.exports = function(grunt) {
         jpegs = ['.jpg', 'jpeg'],
         optipng,
         jpegtran,
-        clear_temp_file,
         min_max_stat,
         not_installed;
 
@@ -146,21 +145,16 @@ module.exports = function(grunt) {
                     // copy the temporary optimized jpg to original file
                     fs.createReadStream('jpgtmp.jpg')
                         .pipe(fs.createWriteStream(outputPath)).on('close', function() {
-                            clear_temp_file('jpgtmp.jpg', function() {
-                                run(files.shift());
-                            });
+                            fs.unlinkSync('jpgtmp.jpg');
+                            run(files,shift());
+                            
                     });
                 });
             }(files.shift()));
         });
     };
 
-    clear_temp_file = function(tempFile, callback) {
-        grunt.util.spawn({
-            cmd:'rm',
-            args:['-rf',tempFile]
-        }, callback);
-    };
+    
 
     // Output some size info about a file, from a stat object.
     min_max_stat = function(min, max) {
