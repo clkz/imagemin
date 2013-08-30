@@ -24,7 +24,12 @@ var imagemin = module.exports = function(dir, dest, cb) {
         jpegs = ['.jpg', 'jpeg'];
 
     var files = [];
-
+    if (Array.isArray(dir)) {
+        dir.forEach(function(v){
+            imagemin(v, dest, cb);
+        });
+        return;
+    }
 
     if (fs.statSync(dir).isDirectory()) {
         //遍历目录
@@ -126,7 +131,7 @@ function jpegtran(files, opts, output, cb) {
                 fs.createReadStream('jpgtmp.jpg')
                     .pipe(fs.createWriteStream(outputPath)).on('close', function() {
                         //删除
-                        fs.unlinkSync(tempFile);
+                        fs.unlinkSync('jpgtmp.jpg');
                         run(files.shift());
                     });
             });
@@ -137,6 +142,7 @@ function jpegtran(files, opts, output, cb) {
 
 
 // Output some size info about a file, from a stat object.
+
 function min_max_stat(min, max) {
     min = typeof min === 'string' ? fs.statSync(min) : min;
     max = typeof max === 'string' ? fs.statSync(max) : max;
@@ -193,6 +199,7 @@ function recurse(rootdir, callback, subdir, judgeFunction) {
 
 // **which** helper, wrapper to isaacs/which package plus some fallback logic
 // specifically for the win32 binaries in vendor/ (optipng.exe, jpegtran.exe)
+
 function which_bin(cmd, cb) {
     if (!win32 || !/optipng|jpegtran/.test(cmd)) return which(cmd, cb);
 

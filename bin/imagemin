@@ -11,4 +11,6 @@ var opts = optimist.argv;
 
 var files = opts._;
 
-imagemin(files, opts.o);
+files.forEach(function(v) {
+    imagemin(v, opts.o);
+});
