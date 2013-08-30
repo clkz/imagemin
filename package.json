@@ -11,9 +11,7 @@
         "web performance"
     ],
     "homepage": "https://github.com/ksky521/imagemin",
-    "bugs": {
-        "url": "https://github.com/ksky521/imagemin/issues"
-    },
+    "bugs": "https://github.com/ksky521/imagemin/issues",
     "author": {
         "name": "Theowang",
         "email": "ksky521@gmail.com",
