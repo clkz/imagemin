@@ -1,6 +1,6 @@
 {
     "name": "imagemin",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "A tool to optimize png and jpg images with optipng & jpegtran",
     "keywords": [
         "png",

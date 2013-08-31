@@ -11,22 +11,22 @@ var which = require('which');
 var log = require('./lib/log');
 
 var win32 = process.platform === 'win32';
-
-var imagemin = module.exports = function(dir, dest, cb) {
-    dest = dest || '';
-    if (typeof dest === 'function') {
-        cb = dest;
+var png = ['.png', '.bmp', '.gif', '.pnm', '.tiff'],
+    jpegs = ['.jpg', 'jpeg'];
+var imagemin = module.exports = function(dir, destDir, cb) {
+    destDir = destDir || '';
+    if (typeof destDir === 'function') {
+        cb = destDir;
     }
     if (typeof cb !== 'function') {
         cb = function() {}
     }
-    var png = ['.png', '.bmp', '.gif', '.pnm', '.tiff'],
-        jpegs = ['.jpg', 'jpeg'];
+
 
     var files = [];
     if (Array.isArray(dir)) {
-        dir.forEach(function(v){
-            imagemin(v, dest, cb);
+        dir.forEach(function(v) {
+            imagemin(v, destDir, cb);
         });
         return;
     }
@@ -50,15 +50,10 @@ var imagemin = module.exports = function(dir, dest, cb) {
     });
 
 
-    if (dest && !/\/$/.test(dest)) {
-        dest += '/';
-    }
-    var pngConfig = {};
-    var jpgConfig = {};
-    optipng(pngfiles, pngConfig, dest, function(err) {
+    optipng(pngfiles, {}, destDir, function(err) {
         if (err) log.error(err);
 
-        jpegtran(jpgfiles, jpgConfig, dest, function(err) {
+        jpegtran(jpgfiles, {}, destDir, function(err) {
             if (err) log.error(err);
             cb();
         });
@@ -80,7 +75,17 @@ function optipng(files, opts, output, cb) {
         log.writeln('Running optipng... ' + log.wordlist(files));
 
         if (output) {
-            args.push('-dir', output, '-clobber');
+            var ext = path.extname(output).toLowerCase();
+            if ( !! ~png.indexOf(ext)) {
+                //文件
+                args.push('-out', output, '-clobber');
+            } else {
+                if (!/\/$/.test(output)) {
+                    output += '/';
+                }
+                //目录
+                args.push('-dir', output, '-clobber');
+            }
         }
 
         var optipng = spawn(cmdpath, args, function() {});
@@ -108,7 +113,17 @@ function jpegtran(files, opts, output, cb) {
 
             var outputPath;
             if (output) {
-                outputPath = output + path.basename(file);
+                var ext = path.extname(output).toLowerCase();
+                if ( !! ~jpegs.indexOf(ext)) {
+                    //文件
+                    outputPath = output;
+                } else {
+                    if (!/\/$/.test(output)) {
+                        output += '/';
+                    }
+                    outputPath = output + path.basename(file);
+                }
+
                 try {
                     fs.readFileSync(outputPath);
                 } catch (err) {
@@ -118,7 +133,6 @@ function jpegtran(files, opts, output, cb) {
             } else {
                 outputPath = file;
             }
-
 
             jpegtran.stdout.pipe(process.stdout);
             jpegtran.stderr.pipe(process.stderr);
@@ -138,7 +152,6 @@ function jpegtran(files, opts, output, cb) {
         }(files.shift()));
     });
 };
-
 
 
 // Output some size info about a file, from a stat object.
