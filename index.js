@@ -9,6 +9,7 @@ var spawn = child_process.spawn;
 //非系统模块
 var which = require('which');
 var log = require('./lib/log');
+var emptyFn = function(){};
 
 var win32 = process.platform === 'win32';
 var png = ['.png', '.bmp', '.gif', '.pnm', '.tiff'],
@@ -19,7 +20,7 @@ var imagemin = module.exports = function(dir, destDir, cb) {
         cb = destDir;
     }
     if (typeof cb !== 'function') {
-        cb = function() {}
+        cb = emptyFn;
     }
 
 
@@ -62,7 +63,7 @@ var imagemin = module.exports = function(dir, destDir, cb) {
 
 function optipng(files, opts, output, cb) {
     opts = opts || {};
-    cb = cb || function() {};
+    cb = cb || emptyFn;
 
     which_bin('optipng', function(err, cmdpath) {
         if (err) return not_installed('optipng', cb);
