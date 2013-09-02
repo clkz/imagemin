@@ -29,7 +29,12 @@
         "colors": "~0.6.2",
         "which": "~1.0.5",
         "optimist": "~0.6.0",
-        "node-pngcrush": "~0.0.9"
+        "node-pngcrush": "~0.0.9",
+        "read": "~1.0.4"
+    },
+    "scripts": {
+        "install": "node ./bin/install",
+        "uninstall": "node ./bin/uninstall"
     },
     "engines": {
         "node": ">=0.6.0"
