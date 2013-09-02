@@ -1,6 +1,6 @@
 {
     "name": "imagemin",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "A tool to optimize png and jpg images with optipng & jpegtran",
     "keywords": [
         "png",
@@ -28,7 +28,8 @@
     "dependencies": {
         "colors": "~0.6.2",
         "which": "~1.0.5",
-        "optimist": "~0.6.0"
+        "optimist": "~0.6.0",
+        "node-pngcrush": "~0.0.9"
     },
     "engines": {
         "node": ">=0.6.0"

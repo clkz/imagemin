@@ -9,7 +9,9 @@ var spawn = child_process.spawn;
 //非系统模块
 var which = require('which');
 var log = require('./lib/log');
-var emptyFn = function(){};
+var pngcrush = require('node-pngcrush');
+
+var emptyFn = function() {};
 
 var win32 = process.platform === 'win32';
 var png = ['.png', '.bmp', '.gif', '.pnm', '.tiff'],
@@ -51,52 +53,51 @@ var imagemin = module.exports = function(dir, destDir, cb) {
     });
 
 
-    optipng(pngfiles, {}, destDir, function(err) {
-        if (err) log.error(err);
 
+    pngc(pngfiles, destDir, function() {
         jpegtran(jpgfiles, {}, destDir, function(err) {
-            if (err) log.error(err);
+            if (err) {
+                log.error(err);
+            }
             cb();
         });
     });
 };
 
-function optipng(files, opts, output, cb) {
-    opts = opts || {};
+function pngc(files, output, cb) {
     cb = cb || emptyFn;
+    if (!files.length) {
+        return cb();
+    }
 
-    which_bin('optipng', function(err, cmdpath) {
-        if (err) return not_installed('optipng', cb);
+    log.writeln('Running pngcrush... ' + log.wordlist(files));
+    var isOutDir = false;
+    if (output) {
+        var ext = path.extname(output).toLowerCase();
+        if ( !! ~png.indexOf(ext)) {
+            //文件
 
-        var args = opts.args ? opts.args : [];
-        args = args.concat(files);
-
-        if (!files.length) return cb();
-
-        log.writeln('Running optipng... ' + log.wordlist(files));
-
-        if (output) {
-            var ext = path.extname(output).toLowerCase();
-            if ( !! ~png.indexOf(ext)) {
-                //文件
-                args.push('-out', output, '-clobber');
-            } else {
-                if (!/\/$/.test(output)) {
-                    output += '/';
-                }
-                //目录
-                args.push('-dir', output, '-clobber');
+        } else {
+            if (!/\/$/.test(output)) {
+                output += path.sep;
             }
+            //目录
+            isOutDir = true;
         }
+    }
+    var file;
+    while (file = files.shift()) {
+        var data = fs.readFileSync(file);
+        var buffer = pngcrush.compress(data);
 
-        var optipng = spawn(cmdpath, args, function() {});
-
-        optipng.stdout.pipe(process.stdout);
-        optipng.stderr.pipe(process.stderr);
-        optipng.on('exit', cb);
-
-    });
-};
+        var outfile = isOutDir ? output + path.basename(file) : output;
+        fs.writeFileSync(outfile, buffer, {
+            flags: 'wb'
+        });
+        min_max_stat(outfile, file);
+    }
+    cb();
+}
 
 function jpegtran(files, opts, output, cb) {
     opts = opts || {};
@@ -120,7 +121,7 @@ function jpegtran(files, opts, output, cb) {
                     outputPath = output;
                 } else {
                     if (!/\/$/.test(output)) {
-                        output += '/';
+                        output += path.sep;
                     }
                     outputPath = output + path.basename(file);
                 }
