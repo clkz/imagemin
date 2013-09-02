@@ -53,7 +53,7 @@ var imagemin = module.exports = function(dir, destDir, cb) {
     });
 
 
-
+    log.writeln('Running imagemin task... ');
     pngc(pngfiles, destDir, function() {
         jpegtran(jpgfiles, {}, destDir, function(err) {
             if (err) {
@@ -70,7 +70,7 @@ function pngc(files, output, cb) {
         return cb();
     }
 
-    log.writeln('Running pngcrush... ' + log.wordlist(files));
+    
     var isOutDir = false;
     if (output) {
         var ext = path.extname(output).toLowerCase();
@@ -81,6 +81,10 @@ function pngc(files, output, cb) {
             if (!/\/$/.test(output)) {
                 output += path.sep;
             }
+
+            if (!fs.existsSync(output)) {
+                output = '';
+            }
             //目录
             isOutDir = true;
         }
@@ -89,12 +93,26 @@ function pngc(files, output, cb) {
     while (file = files.shift()) {
         var data = fs.readFileSync(file);
         var buffer = pngcrush.compress(data);
-
-        var outfile = isOutDir ? output + path.basename(file) : output;
+        log.writeln('*Processing: '.cyan + path.normalize(file));
+        var outfile = file;
+        var min = file,
+            max = file;
+        if (output !== '') {
+            outfile = isOutDir ? output + path.basename(file) : output;
+            min = outfile;
+        } else {
+            min = {
+                size: buffer.length
+            };
+            max = {
+                size: data.length
+            };
+        }
+        log.writeln('Output file: '.cyan + path.normalize(outfile));
         fs.writeFileSync(outfile, buffer, {
             flags: 'wb'
         });
-        min_max_stat(outfile, file);
+        min_max_stat(min, max);
     }
     cb();
 }
@@ -109,7 +127,7 @@ function jpegtran(files, opts, output, cb) {
         (function run(file) {
             if (!file) return cb();
 
-            log.writeln('** Processing: ' + file);
+            log.writeln('*Processing: '.cyan + path.normalize(file));
 
             var jpegtran = spawn(cmdpath, opts.args.concat(file), function() {});
 
@@ -131,7 +149,7 @@ function jpegtran(files, opts, output, cb) {
                 } catch (err) {
                     fs.writeFileSync(outputPath);
                 }
-                log.writeln('Output file: ' + outputPath);
+                log.writeln('Output file: '.cyan + path.normalize(outputPath));
             } else {
                 outputPath = file;
             }

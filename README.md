@@ -1,22 +1,22 @@
 imagemin
 =============
 
-A tool which fork from [grunt-img][grunt-img] to optimize PNG and JPG images with [optipng][optipng] & [jpegtran][jpegtran] ([jpegtran-turbo][jpegtran-turbo] on win32).
+A tool which fork from [grunt-img][grunt-img] to optimize PNG and JPG images with [pngcrush][node-pngcrush] & [jpegtran][jpegtran] ([jpegtran-turbo][jpegtran-turbo] on win32).
 
 ## Getting Started
 
-First, be sure that you have [optipng][optipng] 0.7(or earlier) and [jpegtran][jpegtran] installed in your system.
+First, be sure that you have [jpegtran][jpegtran] installed in your system.
 
 ### for Mac users
 You can install with [homebrew][homebrew]
 ```shell
-brew install optipng jpeg
+brew install jpeg
 ```
 
 ### for Linux users
 Debian, Ubuntu and Mint
 ```shell
-apt-get install optipng libjpeg libjpeg-progs
+apt-get install libjpeg libjpeg-progs
 ```
 Both libraries are easy to find for RPM distributions too.
 
@@ -30,11 +30,12 @@ npm install imagemin
 
 ## How to use
 
+### for shell
 ```shell
 imagemin file/path
 imagemin file/path -o new/file/path
 ```
-
+### for nodejs
 ```js
 var imagemin = require('imagemin');
 imagemin(filePath, destDir, callback);
@@ -43,11 +44,11 @@ imagemin(filePath, destDir, callback);
 Credits
 ---------------
 * Grunt-image [Helder Santana](http://heldr.com)
-* HTML5 Boilerplate [node-build-script](http://github.com/h5bp/node-build-script)
+* node-pngcrush [node-pngcrush](https://github.com/xiangshouding/node-pngcrush)
 
 [node-build-script]: http://github.com/h5bp/node-build-script
 [grunt-img]: https://github.com/heldr/grunt-img
 [jpegtran]: http://jpegclub.org/jpegtran/
 [jpegtran-turbo]: http://libjpeg-turbo.virtualgl.org/
-[optipng]: http://optipng.sourceforge.net/
+[node-pngcrush]: https://github.com/xiangshouding/node-pngcrush
 [homebrew]: http://mxcl.github.com/homebrew/
